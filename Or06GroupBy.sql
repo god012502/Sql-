@@ -144,17 +144,41 @@ group by 절
 ※distinct는 단순히 중복값을 제거함
 */
 --사원테이블에서 각 부서별 급여의 합계는 얼마인가요?
---
 select sum(salary) from employees where department_id=60;
+--100번(Finance) 부서의 급여합계
 select sum(salary) from employees where department_id=100;
 
+select department_id from employees
+    group by department_id;
+    
+select department_id, sum(salary) from employees
+    group by department_id;    
+
 /*
-1단계
+1단계 
+부서가 많은 경우 일일이 부서별로 확인할 수 없으므로 부서를 그룹화한다.
+중복이 제거된 결과로 보이지만 동일한 레코드가 하나의 그룹으로 합쳐진 결과가 인출된다.
 */
-
+select department_id from employees
+    group by department_id;
+    
+-- 2단계 : 각 부서별로 급여의 합계를 계산할 수 있다    
+select department_id, sum(salary) from employees
+    group by department_id;
 
 /*
+아래 쿼리문은 부서번호를 묶어서 결과를 인출하므로, 이름을 기술하면 
+에러가 발생된다. 각 레코드별로 서로 다른 이름이 저장되어 있으므로 그룹의
+조건에 단일 컬럼을 사용할 수 없기 때문이다.
 */ 
+
+
+select
+    department_id, job_id, count(*), avg(salary)
+from employees
+grounp by department_id, job_id
+having count(*)>10;
+
 
 
 /*
